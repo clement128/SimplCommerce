@@ -25,7 +25,7 @@ jobs:
               userProvideBuildInfo: 'msBuildInfo'
               msBuildVersion: '16.0'
               msBuildArchitecture: 'DotNetCore'
-              msBuildCommandline: 'dotnet build ./SimplCommerce.sln'
+              msBuildCommandline: 'dotnet build $(Build.SourcesDirectory)/SimplCommerce.sln'
 
           - task: DotNetCoreCLI@2
             displayName: "run tests"
