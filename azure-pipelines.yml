@@ -29,10 +29,6 @@ jobs:
                 codeCoverageTool: Cobertura
                 summaryFileLocation: $(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml
 
-          - task: CredScan@2
-            inputs:
-                toolMajorVersion: "V1"
-
           - task: RoslynAnalyzers@2
             inputs:
                 userProvideBuildInfo: "auto"
