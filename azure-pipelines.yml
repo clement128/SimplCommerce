@@ -12,8 +12,21 @@ jobs:
                 command: "restore"
                 projects: "**/*/*.csproj"
                 includeNuGetOrg: true
+
           - script: dotnet build ./SimplCommerce.sln
             displayName: "dotnet build"
+          
+          # - task: RoslynAnalyzers@2
+          #   inputs:
+          #       userProvideBuildInfo: "auto"
+
+          - task: RoslynAnalyzers@2
+            inputs:
+              userProvideBuildInfo: 'msBuildInfo'
+              msBuildVersion: '16.0'
+              msBuildArchitecture: 'DotNetCore'
+              msBuildCommandline: 'dotnet build ./SimplCommerce.sln'
+
           - task: DotNetCoreCLI@2
             displayName: "run tests"
             inputs:
@@ -21,14 +34,16 @@ jobs:
                 arguments: "--logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude=[xunit.*]*%2c[System.*]*"
                 projects: "test/**/*.csproj"
                 nobuild: true
+
           - task: DotNetCoreCLI@2
             inputs:
                 command: custom
                 custom: tool
                 arguments: install --tool-path . dotnet-reportgenerator-globaltool
-                displayName: Install ReportGenerator tool
+          
           - script: .\reportgenerator -reports:$(Build.SourcesDirectory)\test\**\coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)\coverlet\reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura"
             displayName: Create reports
+
           - task: PublishCodeCoverageResults@1
             displayName: "Publish code coverage"
             inputs:
@@ -38,10 +53,6 @@ jobs:
           - task: CredScan@2
             inputs:
                 toolMajorVersion: "V1"
-
-          - task: RoslynAnalyzers@2
-            inputs:
-                userProvideBuildInfo: "auto"
 
           - task: SdtReport@1
             inputs:
