@@ -27,6 +27,12 @@ jobs:
               scannerMode: 'MSBuild'
               projectKey: 'SimplCommerce'
 
+          - task: SonarCloudAnalyze@1
+
+          - task: SonarCloudPublish@1
+            inputs:
+              pollingTimeoutSec: '300'
+
           # - script: dotnet build ./SimplCommerce.sln
           #   displayName: "dotnet build"
 
