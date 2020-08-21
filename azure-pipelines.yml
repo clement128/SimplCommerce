@@ -18,18 +18,18 @@ jobs:
           #     command: 'build'
           - task: MSBuild@1
             inputs:
-              solution: '**/*.sln'
+                solution: "**/*.sln"
           # - script: dotnet build ./SimplCommerce.sln
           #   displayName: "dotnet build"
-          
+
           # - task: RoslynAnalyzers@2
           #   inputs:
           #       userProvideBuildInfo: "auto"
 
           - task: RoslynAnalyzers@2
             inputs:
-              userProvideBuildInfo: 'auto'
-          
+                userProvideBuildInfo: "auto"
+
           - task: DotNetCoreCLI@2
             displayName: "run tests"
             inputs:
@@ -43,7 +43,7 @@ jobs:
                 command: custom
                 custom: tool
                 arguments: install --tool-path . dotnet-reportgenerator-globaltool
-          
+
           - script: .\reportgenerator -reports:$(Build.SourcesDirectory)\test\**\coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)\coverlet\reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura"
             displayName: Create reports
 
@@ -61,7 +61,8 @@ jobs:
             inputs:
                 AllTools: true
                 BinSkimBreakOn: "Error"
-                RoslynAnalyzersBreakOn: "Error"
+                RoslynAnalyzers: true
+                RoslynAnalyzersBreakOn: 'WarningAbove'
                 TSLintBreakOn: "Error"
                 ToolLogsNotFoundAction: "Standard"
 
