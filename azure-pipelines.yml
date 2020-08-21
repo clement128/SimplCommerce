@@ -19,6 +19,14 @@ jobs:
           - task: MSBuild@1
             inputs:
                 solution: "**/*.sln"
+          
+          - task: SonarCloudPrepare@1
+            inputs:
+              SonarCloud: 'SonarCloud'
+              organization: 'gw-test'
+              scannerMode: 'MSBuild'
+              projectKey: 'SimplCommerce'
+
           # - script: dotnet build ./SimplCommerce.sln
           #   displayName: "dotnet build"
 
@@ -26,60 +34,60 @@ jobs:
           #   inputs:
           #       userProvideBuildInfo: "auto"
 
-          - task: RoslynAnalyzers@2
-            inputs:
-                userProvideBuildInfo: "auto"
+          # - task: RoslynAnalyzers@2
+          #   inputs:
+          #       userProvideBuildInfo: "auto"
 
-          - task: DotNetCoreCLI@2
-            displayName: "run tests"
-            inputs:
-                command: test
-                arguments: "--logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude=[xunit.*]*%2c[System.*]*"
-                projects: "test/**/*.csproj"
-                nobuild: true
+          # - task: DotNetCoreCLI@2
+          #   displayName: "run tests"
+          #   inputs:
+          #       command: test
+          #       arguments: "--logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude=[xunit.*]*%2c[System.*]*"
+          #       projects: "test/**/*.csproj"
+          #       nobuild: true
 
-          - task: DotNetCoreCLI@2
-            inputs:
-                command: custom
-                custom: tool
-                arguments: install --tool-path . dotnet-reportgenerator-globaltool
+          # - task: DotNetCoreCLI@2
+          #   inputs:
+          #       command: custom
+          #       custom: tool
+          #       arguments: install --tool-path . dotnet-reportgenerator-globaltool
 
-          - script: .\reportgenerator -reports:$(Build.SourcesDirectory)\test\**\coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)\coverlet\reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura"
-            displayName: Create reports
+          # - script: .\reportgenerator -reports:$(Build.SourcesDirectory)\test\**\coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)\coverlet\reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura"
+          #   displayName: Create reports
 
-          - task: PublishCodeCoverageResults@1
-            displayName: "Publish code coverage"
-            inputs:
-                codeCoverageTool: Cobertura
-                summaryFileLocation: $(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml
+          # - task: PublishCodeCoverageResults@1
+          #   displayName: "Publish code coverage"
+          #   inputs:
+          #       codeCoverageTool: Cobertura
+          #       summaryFileLocation: $(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml
 
-          - task: CredScan@2
-            inputs:
-                toolMajorVersion: "V1"
+          # - task: CredScan@2
+          #   inputs:
+          #       toolMajorVersion: "V1"
 
-          - task: SdtReport@1
-            inputs:
-                AllTools: true
-                BinSkimBreakOn: "Error"
-                RoslynAnalyzers: true
-                RoslynAnalyzersBreakOn: 'WarningAbove'
-                TSLintBreakOn: "Error"
-                ToolLogsNotFoundAction: "Standard"
+          # - task: SdtReport@1
+          #   inputs:
+          #       AllTools: true
+          #       BinSkimBreakOn: "Error"
+          #       RoslynAnalyzers: true
+          #       RoslynAnalyzersBreakOn: 'WarningAbove'
+          #       TSLintBreakOn: "Error"
+          #       ToolLogsNotFoundAction: "Standard"
 
-          - task: TSLint@1
-            inputs:
-                RuleLibrary: "tslint"
-                Ruleset: "tsrecommended"
-                FileSelectionType: "fileGlob"
-                Files: '**\*.ts'
-                OutputFormat: "json"
-                ToolVersion: "latest"
-                TypeScriptVersion: "latest"
+          # - task: TSLint@1
+          #   inputs:
+          #       RuleLibrary: "tslint"
+          #       Ruleset: "tsrecommended"
+          #       FileSelectionType: "fileGlob"
+          #       Files: '**\*.ts'
+          #       OutputFormat: "json"
+          #       ToolVersion: "latest"
+          #       TypeScriptVersion: "latest"
 
-          - task: PostAnalysis@1
-            inputs:
-                AllTools: true
-                BinSkimBreakOn: "Error"
-                RoslynAnalyzersBreakOn: "Error"
-                TSLintBreakOn: "Error"
-                ToolLogsNotFoundAction: "Standard"
+          # - task: PostAnalysis@1
+          #   inputs:
+          #       AllTools: true
+          #       BinSkimBreakOn: "Error"
+          #       RoslynAnalyzersBreakOn: "Error"
+          #       TSLintBreakOn: "Error"
+          #       ToolLogsNotFoundAction: "Standard"
