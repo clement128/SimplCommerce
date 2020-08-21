@@ -13,8 +13,11 @@ jobs:
                 projects: "**/*/*.csproj"
                 includeNuGetOrg: true
 
-          - script: dotnet build ./SimplCommerce.sln
-            displayName: "dotnet build"
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'build'
+          # - script: dotnet build ./SimplCommerce.sln
+          #   displayName: "dotnet build"
           
           # - task: RoslynAnalyzers@2
           #   inputs:
