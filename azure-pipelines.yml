@@ -22,14 +22,11 @@ jobs:
           # - task: RoslynAnalyzers@2
           #   inputs:
           #       userProvideBuildInfo: "auto"
-
+          
           - task: RoslynAnalyzers@2
             inputs:
-              userProvideBuildInfo: 'msBuildInfo'
-              msBuildVersion: '16.0'
-              msBuildArchitecture: 'DotNetCore'
-              msBuildCommandline: 'dotnet build $(Build.SourcesDirectory)/SimplCommerce.sln'
-
+              userProvideBuildInfo: 'auto'
+          
           - task: DotNetCoreCLI@2
             displayName: "run tests"
             inputs:
