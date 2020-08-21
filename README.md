@@ -1,9 +1,3 @@
-SimpleCommerce clone for code analytics testing
 
-
-branch - 1
-
-
-asd
-
+[SimpleCommerce](https://github.com/simplcommerce/SimplCommerce) clone for code analytics testing
 
