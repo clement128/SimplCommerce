@@ -26,5 +26,11 @@ namespace SimplCommerce.Module.ActivityLog.Areas.ActivityLog.Controllers
         {
             return await _activityTypeRepository.List().Where(x => x.EntityTypeId == entityTypeId).Take(10).ToListAsync();
         }
+
+        [HttpGet("test")]
+        public IActionResult Test(string userInput)
+        {
+            return Ok(userInput);
+        }
     }
 }
