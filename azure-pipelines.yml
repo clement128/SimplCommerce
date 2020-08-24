@@ -18,7 +18,8 @@ jobs:
           #     command: 'build'
           - task: MSBuild@1
             inputs:
-                solution: "**/*.sln"
+              solution: '**/*.sln'
+              msbuildArchitecture: 'x64'
 
           - task: SonarCloudPrepare@1
             inputs:
